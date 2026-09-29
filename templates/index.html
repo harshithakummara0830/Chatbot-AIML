@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Chatbot</title>
+
+  <style>
+    /* General Page */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d5dce8;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+/* Main Container */
+
+.Container {
+    width: 750px;
+    max-width: 100%;
+
+    background: white;
+
+    padding: 35px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
+}
+
+
+/* Heading */
+
+h1 {
+    text-align: center;
+
+    font-size: 32px;
+
+    color: #3156a3;
+
+    margin-bottom: 10px;
+}
+
+
+.subtitle {
+    text-align: center;
+
+    color: #666;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+
+    margin-bottom: 25px;
+}
+
+
+/* Suggested Questions */
+
+.suggestions {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 25px;
+}
+
+
+.suggestions button {
+    border: none;
+
+    background: #edf3ff;
+
+    color: #3156a3;
+
+    padding: 12px 20px;
+
+    border-radius: 25px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+.suggestions button:hover {
+    background: #3156a3;
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* Chat Box */
+
+#chat-box {
+    height: 300px;
+
+    background: #f7f9fc;
+
+    border: 1px solid #e1e6ef;
+
+    border-radius: 15px;
+
+    padding: 20px;
+
+    overflow-y: auto;
+
+    margin-bottom: 20px;
+}
+
+
+/* -----------------------------
+   Bot Message - LEFT
+------------------------------ */
+
+.bot-msg {
+    display: flex;
+
+    justify-content: flex-start;
+
+    margin-bottom: 15px;
+}
+
+
+.bot-msg p {
+    max-width: 80%;
+
+    background: #e8f0ff;
+
+    color: #333;
+
+    padding: 14px 18px;
+
+    border-radius: 5px 18px 18px 18px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* -----------------------------
+   User Message - RIGHT
+------------------------------ */
+
+.user-msg {
+    width: fit-content;
+
+    max-width: 80%;
+
+    margin-left: auto;
+
+    margin-bottom: 15px;
+
+    background: #3156a3;
+
+    color: white;
+
+    padding: 14px 18px;
+
+    border-radius: 18px 18px 5px 18px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+
+/* -----------------------------
+   Time
+------------------------------ */
+
+.time {
+    font-size: 11px;
+
+    margin-top: 6px;
+
+    text-align: right;
+
+    opacity: 0.75;
+}
+
+
+/* -----------------------------
+   Typing Message - LEFT
+------------------------------ */
+
+.typing {
+    width: fit-content;
+
+    max-width: 80%;
+
+    background: #e8f0ff;
+
+    color: #555;
+
+    padding: 12px 18px;
+
+    border-radius: 5px 18px 18px 18px;
+
+    font-size: 14px;
+
+    font-style: italic;
+
+    margin-bottom: 15px;
+}
+
+
+/* -----------------------------
+   Input Area
+------------------------------ */
+
+.input-area {
+    display: flex;
+
+    width: 100%;
+
+    margin-bottom: 12px;
+}
+
+
+#question {
+    width: 100%;
+
+    padding: 14px 18px;
+
+    border: 1px solid #d5dce8;
+
+    border-radius: 12px;
+
+    outline: none;
+
+    font-size: 15px;
+}
+
+
+#question:focus {
+    border-color: #3156a3;
+
+    box-shadow: 0 0 5px rgba(49, 86, 163, 0.15);
+}
+
+
+/* -----------------------------
+   Send Button
+------------------------------ */
+
+#send-btn {
+    width: 100%;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #3156a3;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+#send-btn:hover {
+    background: #244586;
+
+    transform: translateY(-1px);
+}
+
+
+/* -----------------------------
+   Scrollbar
+------------------------------ */
+
+#chat-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+#chat-box::-webkit-scrollbar-thumb {
+    background: #c5cedd;
+
+    border-radius: 10px;
+}
+
+
+/* Mobile Responsive */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 15px;
+    }
+
+
+    .Container {
+        padding: 22px;
+    }
+
+
+    h1 {
+        font-size: 26px;
+    }
+
+
+    .suggestions {
+        gap: 8px;
+    }
+
+
+    .suggestions button {
+        padding: 10px 14px;
+    }
+
+
+    #chat-box {
+        height: 280px;
+    }
+
+
+    .user-msg,
+    .bot-msg p,
+    .typing {
+        max-width: 90%;
+    }
+
+}
+  </style>
+
+</head>
+
+
+<body>
+
+    <div class="Container">
+
+        <!-- Heading -->
+
+        <h1>AI Chatbot🤖</h1>
+
+        <p class="subtitle">
+            Welcome to the AI Chatbot☺️! <br>
+            This is a simple chatbot interface
+            where you can interact with an AI model.
+        </p>
+
+
+        <!-- Suggested Questions -->
+
+        <div class="suggestions">
+
+            <button onclick="setQuestion('What is the library hours?')">
+                Library🙂
+            </button>
+
+            <button onclick="setQuestion('What are the placement eligibility criteria?')">
+                Placement🤷‍♂️
+            </button>
+
+            <button onclick="setQuestion('How is the hostel rules?')">
+                Hostel😑
+            </button>
+
+            <button onclick="setQuestion('When do exam start?')">
+                Exams🤢
+            </button>
+
+        </div>
+
+
+        <!-- Chat Box -->
+
+        <div id="chat-box">
+
+            <div class="bot-msg">
+
+                <p>
+                    Hello! I am your AI chatbot.
+                    Ask Anything you want to know about 😁:
+                    Syllabus, placements, hostel, exams and more.
+                    I will try my best to answer your questions 🤣
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Input Area -->
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="question"
+                placeholder="Type your message here...😁"
+            >
+
+        </div>
+
+
+        <!-- Send Button -->
+
+        <button onclick="ask()" id="send-btn">
+            Send
+        </button>
+
+    </div>
+    <script>
+    // --------------------------------
+    // Suggested Question
+    // --------------------------------
+
+    function setQuestion(text) {
+
+        let input = document.getElementById("question");
+
+        input.value = text;
+
+        // Automatically focus input
+        input.focus();
+
+    }
+    // --------------------------------
+    // Ask Function
+    // --------------------------------
+
+    async function ask() {
+
+        let input = document.getElementById("question");
+
+        let q = input.value.trim();
+
+        if (q === "") {
+
+            return;
+
+        }
+
+        // Clear input immediately
+        input.value = "";
+        let box = document.getElementById("chat-box");
+        // Show user question
+        box.innerHTML += `
+
+            <div class="user-msg">
+
+                ${q}
+
+                <div class="time">
+
+                    ${new Date().toLocaleTimeString()}
+
+                </div>
+
+            </div>
+
+        `;
+        // Show typing
+
+        box.innerHTML += `
+
+            <div class="typing" id="loading">
+
+                AI is typing...
+
+            </div>
+
+        `;
+
+
+        box.scrollTop = box.scrollHeight;
+
+        // Send question to backend
+
+        let res = await fetch("/ask", {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify({
+
+                question: q
+
+            })
+
+        });
+        let data = await res.json();
+
+        // Remove typing
+
+        document.getElementById("loading").remove();
+
+        // Show AI answer
+
+        box.innerHTML += `
+
+            <div class="bot-msg">
+
+                <p>
+
+                    ${data.answer}
+
+                </p>
+
+                <div class="time">
+
+                    ${new Date().toLocaleTimeString()}
+
+                </div>
+
+            </div>
+
+        `;
+
+        box.scrollTop = box.scrollHeight;
+
+    }
+    // --------------------------------
+    // ENTER KEY
+    // --------------------------------
+
+    document.getElementById("question").addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+
+            event.preventDefault();
+
+            ask();
+
+        }
+
+    });
+</script>
+</body>
+
+</html>
